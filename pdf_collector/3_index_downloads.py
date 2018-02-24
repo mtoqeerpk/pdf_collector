@@ -15,7 +15,7 @@ import string
 
 DATA_PDFS_DIR = 'data_pdfs'
 DATA_TXTS_DIR = 'data_txts'
-DOCS_DIR = 'docs'
+DOCS_DIR = '../docs'
 with open('website_list.txt', 'r', encoding = "utf-8") as website_file:
     websites = [tuple([k.strip() for k in line.split(', ')]) 
     for line in website_file]
