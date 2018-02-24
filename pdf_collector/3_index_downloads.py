@@ -76,6 +76,14 @@ def create_html_file(DATA_PDFS_DIR, DATA_TXTS_DIR, DOCS_DIR, websites):
                 html += '<td><a href="{}">{}</a></td>\n'.format(url, filename_str)
                 html += '<td>{}</td>\n'.format(name)
                 html += '<td>{}</td>\n'.format(filesize)
+                html += '<td>Score</td>\n'
+                
+                base_url = 'http://tommyod.pythonanywhere.com/pdf_collector/'
+                #@app.route('/pdf_collector/up/<str:website>/<int:pdf_hash>')
+                upvote_url = base_url + 'up/{}/{}'.format(name, abs(hash(filename)))
+                downvote_url = base_url + 'down/{}/{}'.format(name, abs(hash(filename)))
+                html += '<td><a href="{}">Upvote</a></td>\n'.format(upvote_url)
+                html += '<td><a href="{}">Downvote</a></td>\n'.format(downvote_url)
                 html += '</tr>\n'
                 counter += 1
                 
