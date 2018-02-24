@@ -6,6 +6,11 @@ __pycache__/
 # C extensions
 *.so
 
+# PDF files
+*.pdf
+pdf_collector/data_pdfs/
+pdf_collector/data_txts/
+
 # Distribution / packaging
 .Python
 env/
