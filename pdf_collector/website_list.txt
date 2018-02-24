@@ -1,0 +1,2 @@
+norges_bank, https://www.norges-bank.no/
+finanstilsynet, https://www.finanstilsynet.no/
