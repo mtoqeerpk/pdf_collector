@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Sat Feb 24 09:55:19 2018
+Download PDF files and save them.
 
 @author: tommy
 """

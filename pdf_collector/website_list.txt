@@ -1,5 +1,2 @@
 norges_bank, https://www.norges-bank.no/
 finanstilsynet, https://www.finanstilsynet.no/
-nordea, https://www.nordea.com/no/investor-relations/
-danske_bank, https://danskebank.com/no
-pwc, https://www.pwc.com/gx/en.html
