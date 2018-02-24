@@ -42,6 +42,9 @@ for name, url in websites:
 
     data_dict = dict()
     
+    if not os.path.exists(log_file):
+        continue
+    
 
     with open(log_file, 'r', encoding = "ISO-8859-1") as log_file:
         for line in log_file:
@@ -55,8 +58,11 @@ for name, url in websites:
                 pass
             _, filename = os.path.split(local)
 
-            
-            info = os.stat(local)
+            try:
+                info = os.stat(local)
+            except FileNotFoundError:
+                print('Not found:', local)
+                continue
             data_dict[local] = (date, url)
             time_modified = datetime.datetime.fromtimestamp(os.path.getmtime(local))
             time_change = datetime.datetime.fromtimestamp(os.path.getctime(local))
