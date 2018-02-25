@@ -30,6 +30,16 @@
 		}
 	}
 </style>
+
+<script type="text/javascript">
+$(document).ready(function() { 
+    // call the tablesorter plugin 
+    $("table").tablesorter({ 
+        // sort on the first column and third column, order asc 
+        sortList: [[0,1],[2,0]] 
+    }); 
+}); 
+</script>
 </head>  
 <body>
 <article class="markdown-body">
@@ -59,15 +69,5 @@ Every vote will help train <strong>Lesmund</strong> - a machine learning algorit
 
 </article>
 </body>  
-
-<script type="text/javascript">
-$(document).ready(function() { 
-    // call the tablesorter plugin 
-    $("table").tablesorter({ 
-        // sort on the first column and third column, order asc 
-        sortList: [[0,1],[2,0]] 
-    }); 
-}); 
-</script>
 </html>
 

@@ -82,18 +82,9 @@ def get_text():
                 
                 
     return data_dict
-    
-    
-
-
-
-data = ['bob i am a cat. bob is a cat', 
-        'dogs are dogs', 
-        'cats and bob']
-
 
 data = sorted(get_text().items())
-random.shuffle(data)
+
 
 
 #%% ----------------
@@ -116,11 +107,11 @@ print('Texts: {:,}\t Words: {:,}'.format(num_texts, num_words))
 reverse_vocab = {v:k for (k, v) in count_vect.vocabulary_.items()}
 
 
-
 scaled_counts = tf_transformer.transform(X_train_counts)
 
 # Loop gjennom hver tekst
 for text in range(num_texts):
+    print(text, end = '')
     filename = data_files[text]
     #print(filename)
         
@@ -129,8 +120,7 @@ for text in range(num_texts):
     dense = scaled_counts[text, :].todense()
     sorted_arr = dense.argsort()[:, -n:][::-1]
     for k in np.nditer(sorted_arr):
-        pass
-        #print(' ',int(k), reverse_vocab[int(k)])
+        print(' ',int(k), reverse_vocab[int(k)])
 
 
 
