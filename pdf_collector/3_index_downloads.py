@@ -17,14 +17,6 @@ with open('website_list.txt', 'r', encoding = "utf-8") as website_file:
     websites = [tuple([k.strip() for k in line.split(', ')]) 
     for line in website_file]
     
-def RGB_to_hex(RGB_tuple):
-    """
-    """
-    red, green, blue, _ = RGB_tuple
-    def clamp(x): 
-        return max(0, min(x, 255))
-
-    return "#{0:02x}{1:02x}{2:02x}".format(*[clamp(k) for k in [red, green, blue]])
 
 def create_html_file(DATA_PDFS_DIR, DATA_TXTS_DIR, DOCS_DIR, websites):
     """
@@ -71,8 +63,8 @@ def create_html_file(DATA_PDFS_DIR, DATA_TXTS_DIR, DOCS_DIR, websites):
                     
                 hex_color = matplotlib.colors.to_hex(matplotlib.cm.Greens(min(0.6, filesize/2)))
                 html += '<tr style="background-color:{}">\n'.format(hex_color)
-                html += '<td>{}</td>\n'.format(counter)
                 html += '<td>{}</td>\n'.format(str(time_modified)[:10])
+                html += '<td>{}</td>\n'.format(counter)
                 html += '<td><a href="{}">{}</a></td>\n'.format(url, filename_str)
                 html += '<td>{}</td>\n'.format(name)
                 html += '<td>{}</td>\n'.format(filesize)

@@ -42,8 +42,8 @@ Every vote will help train <strong>Lesmund</strong> - a machine learning algorit
 <table class="tablesorter" id="myTable">
 <thead> 
   <tr>
-    <th>Row</th>
     <th>Modified time</th>
+    <th>Row</th>
     <th>File</th>
     <th>Website</th>
     <th>Size</th>
@@ -61,25 +61,13 @@ Every vote will help train <strong>Lesmund</strong> - a machine learning algorit
 </body>  
 
 <script type="text/javascript">
-$(function() {
-
-  // call the tablesorter plugin
-  $("table").tablesorter({
-    /*theme : 'blue',
-    
-    // define an overall custom text extraction function
-    textExtraction: function(node, table, cellIndex) {
-      return $(node).text();
-    }
-    */
-
-    // Define a custom text extraction function for each column
-    // In this example, textExtraction 1-5 functions don't really need to
-    // be defined, since they can also be obtained using `$(node).text()`
-
-  });
-
-});
+$(document).ready(function() { 
+    // call the tablesorter plugin 
+    $("table").tablesorter({ 
+        // sort on the first column and third column, order asc 
+        sortList: [[0,1],[2,0]] 
+    }); 
+}); 
 </script>
 </html>
 
