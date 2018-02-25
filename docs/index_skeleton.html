@@ -18,7 +18,7 @@
 	.markdown-body {
 		box-sizing: border-box;
 		min-width: 200px;
-		max-width: 1000px;
+		max-width: 1200px;
 		margin: 0 auto;
 		padding: 45px;
 		font-size: 12px;
@@ -47,19 +47,28 @@ $(document).ready(function() {
 <h1>Indexed PDF files </h1>
 
 <p> Vote up or down on what is interesting. 
-Every vote will help train <strong>Lesmund</strong> - a machine learning algorithm which reads PDFs.</p>
+Every vote will help train a machine learning algorithm.
+The indexed PDFs were obtained as follows:</p>
+
+
+<ul>
+<li>PDF files were downloaded using the UNIX "wget" tool.</li>
+<li>The PDF files were then converted to raw text using the "pdftotext" tool (ubuntu).</li>
+<li>A machine learning preprocessor, the "term frequency–inverse document frequency" was used to extract keywords.</li>
+<li>A minimalistic API was built. The API will accept votes and these votes may be used to train a model.</li>
+<li>For more information, see the source code at: https://github.com/tommyod/pdf_collector</li>
+</ul>
 
 <table class="tablesorter" id="myTable">
 <thead> 
   <tr>
     <th>Modified time</th>
-    <th>Row</th>
     <th>File</th>
     <th>Website</th>
     <th>Size</th>
     <th>Score</th>
-    <th>Upvote</th>
-    <th>Downvote</th>
+    <th>Vote</th>
+    <th>Terms</th>
   </tr>
 </thead> 
 <tbody> 

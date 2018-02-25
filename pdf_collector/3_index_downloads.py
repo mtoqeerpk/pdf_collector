@@ -17,6 +17,37 @@ with open('website_list.txt', 'r', encoding = "utf-8") as website_file:
     websites = [tuple([k.strip() for k in line.split(', ')]) 
     for line in website_file]
     
+    
+def join_up_to(iterable, len_limit, sep = ', '):
+    
+    result = ''
+    i = 0
+    while len(result) < len_limit:
+        try:
+            result += sep + iterable[i]
+        except:
+            break
+        i += 1
+        
+    return result.strip(sep)
+    
+    
+def read_top_terms():
+    """
+    Read top terms for each document from a file.
+    """
+    DATA_TXTS_DIR = 'data_txts'
+    TOP_TERMS_FILENAME = 'top_terms.txt'
+    filename = os.path.join(DATA_TXTS_DIR, TOP_TERMS_FILENAME)
+    top_terms = dict()
+    with open(filename, 'r') as terms_file:
+        for line in terms_file:
+            url, *terms = line.split(', ')
+            
+            top_terms[url] = [t.strip() for t in terms]
+            
+    return top_terms
+    
 
 def create_html_file(DATA_PDFS_DIR, DATA_TXTS_DIR, DOCS_DIR, websites):
     """
@@ -26,6 +57,8 @@ def create_html_file(DATA_PDFS_DIR, DATA_TXTS_DIR, DOCS_DIR, websites):
     # Create folder for data if it does not exist
     if not os.path.exists(DOCS_DIR):
         os.makedirs(DOCS_DIR)
+        
+    top_terms = read_top_terms()
         
     html = ''
     counter = 1
@@ -43,7 +76,6 @@ def create_html_file(DATA_PDFS_DIR, DATA_TXTS_DIR, DOCS_DIR, websites):
                 if not '.pdf' in line:
                     continue
                 try:
-                    date = line[:19]
                     url = line[line.index('URL:')+4:line.index('.pdf')+4]
                     local = line[line.index('-> "')+4:line.index('.pdf"')+4]
                 except:
@@ -61,21 +93,25 @@ def create_html_file(DATA_PDFS_DIR, DATA_TXTS_DIR, DOCS_DIR, websites):
                 else:
                     filename_str = filename
                     
+                    
+                    
                 hex_color = matplotlib.colors.to_hex(matplotlib.cm.Greens(min(0.6, filesize/2)))
                 html += '<tr style="background-color:{}">\n'.format(hex_color)
                 html += '<td>{}</td>\n'.format(str(time_modified)[:10])
-                html += '<td>{}</td>\n'.format(counter)
                 html += '<td><a href="{}">{}</a></td>\n'.format(url, filename_str)
                 html += '<td>{}</td>\n'.format(name)
                 html += '<td>{}</td>\n'.format(filesize)
                 html += '<td>Score</td>\n'
+                terms = top_terms[url]
+                html += '<td>{}</td>\n'.format(join_up_to(terms, 200, sep = ', '))
+                
                 
                 base_url = 'http://tommyod.pythonanywhere.com/pdf_collector/'
                 #@app.route('/pdf_collector/up/<str:website>/<int:pdf_hash>')
                 upvote_url = base_url + 'up/{}/{}'.format(name, abs(hash(filename)))
                 downvote_url = base_url + 'down/{}/{}'.format(name, abs(hash(filename)))
-                html += '<td><a href="{}">Upvote</a></td>\n'.format(upvote_url)
-                html += '<td><a href="{}">Downvote</a></td>\n'.format(downvote_url)
+                
+                html += '<td><a href="{}">Up</a> / <a href="{}">Down</a></td>\n'.format(upvote_url, downvote_url)
                 html += '</tr>\n'
                 counter += 1
                 

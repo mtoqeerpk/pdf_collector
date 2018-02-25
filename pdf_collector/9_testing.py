@@ -37,7 +37,7 @@ def get_text():
         websites = [tuple([k.strip() for k in line.split(', ')]) 
         for line in website_file]
         
-    ALLOWED_CHARS = set(string.ascii_letters + 'øæåØÆÅ' + ' .,-%&@£+-')
+    ALLOWED_CHARS = set(string.ascii_letters + 'øæåØÆÅ' + ' .,-%&@£+-\\' + r"\\")
     data_dict = dict()
     # --------------------------
     # ---------- MAIN LOOP ---------
@@ -71,8 +71,10 @@ def get_text():
             #print(local, data_dict[local])
             try:
                 with open(text_file, 'r') as text_file:
-                    text = ''.join(line for line in text_file)
+                    text = ''.join(line.replace('\n', ' ') for line in text_file)
+                    print('---------------\n', repr(text[:200]))
                     text = ''.join([c for c in text if c in ALLOWED_CHARS])
+                    print('---------------\n', repr(text[:200]))
             except:
                 continue
                     
@@ -88,39 +90,62 @@ data = sorted(get_text().items())
 
 
 #%% ----------------
+
+# Prepare the data
 data_text = [v[1]['text'] for v in data]
 data_files = [v[0] for v in data]
 
+# Retrieve a set of stopwords, count occurences and save as sparse matrix
 stop_words = list(yield_stopwords())
 count_vect = CountVectorizer(stop_words = stop_words)
 X_train_counts = count_vect.fit_transform(data_text)
+reverse_vocab = {v:k for (k, v) in count_vect.vocabulary_.items()}
 
-
+# Transform using term frequency and term frequency inverse document frequen.
+# See wikipedia for more information:
+# https://en.wikipedia.org/wiki/Tf%E2%80%93idf
 tf_transformer = TfidfTransformer(use_idf=True).fit(X_train_counts)
-
 num_texts, num_words = X_train_counts.shape
+scaled_counts = tf_transformer.transform(X_train_counts)
 
 print('Texts: {:,}\t Words: {:,}'.format(num_texts, num_words))
 
-#print(count_vect.vocabulary_)
-
-reverse_vocab = {v:k for (k, v) in count_vect.vocabulary_.items()}
 
 
-scaled_counts = tf_transformer.transform(X_train_counts)
 
-# Loop gjennom hver tekst
+#%% ----------------
+
+top_terms = dict()
+
+DATA_TXTS_DIR = 'data_txts'
+TOP_TERMS_FILENAME = 'top_terms.txt'
+terms_file = open(os.path.join(DATA_TXTS_DIR, TOP_TERMS_FILENAME), 'w')
+
+# Iterate through every single text
 for text in range(num_texts):
-    print(text, end = '')
+    print(data[text][0])
     filename = data_files[text]
     #print(filename)
         
     # Hent ut topp n ord
-    n = 10
+    n = 50
     dense = scaled_counts[text, :].todense()
     sorted_arr = dense.argsort()[:, -n:][::-1]
     for k in np.nditer(sorted_arr):
-        print(' ',int(k), reverse_vocab[int(k)])
+        break
+        #print(' ',int(k), reverse_vocab[int(k)])
+        
+        
+    top_terms[data[text][1]['url']] = [reverse_vocab[int(k)] for 
+             k in np.nditer(sorted_arr) if 3 < len(reverse_vocab[int(k)]) < 25]
+    
+    #print(top_terms)
+    
+    terms_file.write(', '.join([data[text][1]['url']] +
+                               top_terms[data[text][1]['url']]) + '\n')
+    
+    
+terms_file.close()
 
 
 
