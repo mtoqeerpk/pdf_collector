@@ -13,16 +13,15 @@ import time
 
 # Constants
 DATA_PDFS_DIR = 'data_pdfs'
-with open('website_list.txt', 'r', encoding = "utf-8") as website_file:
+with open('website_list.txt', 'r', encoding="utf-8") as website_file:
     websites = [tuple([k.strip() for k in line.split(', ')]) 
-    for line in website_file]
+                for line in website_file]
 
 
 def download_from_website(DATA_PDFS_DIR, name, url):
     """
     Download from a single pdf.
     """
-    
     # Create a folder for the PDFs if it does not exist
     if not os.path.exists(os.path.join(DATA_PDFS_DIR, name)):
         os.makedirs(os.path.join(DATA_PDFS_DIR, name))
@@ -33,9 +32,10 @@ def download_from_website(DATA_PDFS_DIR, name, url):
     log_name = os.path.join(DATA_PDFS_DIR, 'log_{}.txt'.format(name))
     
     # Download using the wget command (UNIX only)
+    save_to = os.path.join(DATA_PDFS_DIR, name)
     subprocess.run(["wget", 
                     url, 
-                    "--directory-prefix={}".format(os.path.join(DATA_PDFS_DIR, name)),
+                    "--directory-prefix={}".format(save_to),
                     "-nd", 
                     "--accept=pdf", 
                     "-r", 

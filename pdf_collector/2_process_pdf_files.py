@@ -10,9 +10,10 @@ import subprocess
 
 DATA_PDFS_DIR = 'data_pdfs'
 DATA_TXTS_DIR = 'data_txts'
-with open('website_list.txt', 'r', encoding = "utf-8") as website_file:
+with open('website_list.txt', 'r', encoding="utf-8") as website_file:
     websites = [tuple([k.strip() for k in line.split(', ')]) 
-    for line in website_file]
+                for line in website_file]
+
 
 def yield_pdfs(DATA_PDFS_DIR, websites):
     """
@@ -38,7 +39,8 @@ def yield_pdfs(DATA_PDFS_DIR, websites):
                 
         for filename in filenames:
             yield (name, filename)
-               
+          
+            
 def convert_to_txt(DATA_PDFS_DIR, websites):
     """
     Convert PDF files to TXT files.
@@ -55,11 +57,14 @@ def convert_to_txt(DATA_PDFS_DIR, websites):
         
     # Convert to text files
     for name, filename in yield_pdfs(DATA_PDFS_DIR, websites):
-        filename_pdf = os.path.join(DATA_PDFS_DIR, name, filename)
-        filename_txt = os.path.join(DATA_TXTS_DIR, name, filename.replace('.pdf', '.txt'))
+        filename_pdf = os.path.join(DATA_PDFS_DIR, name, 
+                                    filename)
+        filename_txt = os.path.join(DATA_TXTS_DIR, name, 
+                                    filename.replace('.pdf', '.txt'))
         
         # Use the UNIX tool pdftotext to convert
         subprocess.run(["pdftotext", filename_pdf, filename_txt])
+    
     
 if __name__ == '__main__':
     convert_to_txt(DATA_PDFS_DIR, websites)
